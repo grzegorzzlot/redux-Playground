@@ -1,28 +1,40 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {connect} from 'react-redux';
+import {add, del} from './actions/index'
 
 class App extends Component {
+  componentDidMount() {
+    console.log(this.props)
+  }
+handlePlus = ()=>{
+    this.props.add()
+}
+handleMinus = ()=>{
+    this.props.del()
+}
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+        <div className="App">
+            <button onClick={this.handlePlus}>Klik +</button>
+            <span>{this.props.data}</span>
+            <button onClick={this.handleMinus}>Klik -</button>
+        </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        data: state.dummyData.data
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        add: ()=>{ dispatch(add()) },
+        del: ()=>{ dispatch(del()) }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
